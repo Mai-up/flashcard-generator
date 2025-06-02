@@ -57,7 +57,7 @@ def create_flashcard_pdf(pairs):
     return io.BytesIO(pdf_output)
 
 # Streamlit UI
-st.title("フラッシュカード自動作成ツール")
+st.title("即席！フラッシュカード自動作成")
 st.caption("言葉をペアで入力すると、印刷用のPDFが作れます。")
 
 tab1, tab2, tab3 = st.tabs(["1枚だけ作成", "10枚まで作成", "もっと作成"])
