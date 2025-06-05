@@ -18,6 +18,7 @@ def fit_text(pdf, text, max_width, initial_font_size):
 def create_flashcard_pdf(pairs):
     pdf = FPDF(orientation="L", format="A4")
     pdf.add_font("Noto", "", "NotoSerifJP-Regular.ttf", uni=True)
+    pdf.add_font("Noto", "M", "NotoSerifJP-Medium.ttf", uni=True)
 
     page_width = 297
     page_height = 210
@@ -32,7 +33,7 @@ def create_flashcard_pdf(pairs):
 
         # 上の語
         top_font_size = fit_text(pdf, top_text, max_width, 120)
-        pdf.set_font("Noto", size=top_font_size)
+        pdf.set_font("Noto", "M", size=top_font_size)
         top_w = pdf.get_string_width(top_text)
         top_x = (page_width - top_w) / 2
         top_y = (page_height / 2 - 20) / 2
@@ -46,7 +47,7 @@ def create_flashcard_pdf(pairs):
 
         # 下の語
         bottom_font_size = fit_text(pdf, bottom_text, max_width, 120)
-        pdf.set_font("Noto", size=bottom_font_size)
+        pdf.set_font("Noto", "M", size=top_font_size)
         bottom_w = pdf.get_string_width(bottom_text)
         bottom_x = (page_width - bottom_w) / 2
         bottom_y = page_height / 2 + (page_height / 2 - 20) / 2
@@ -58,7 +59,7 @@ def create_flashcard_pdf(pairs):
 
 # Streamlit UI
 st.title("即席！フラッシュカード自動作成")
-st.caption("言葉をペアで入力すると、印刷用のPDFが作れます。")
+st.caption("出力されるPDFを山折りにすると、即席フラッシュカードが作れます。作者情報👉 [@Ichimai8](https://x.com/Ichimai8)")
 
 tab1, tab2, tab3 = st.tabs(["1枚だけ作成", "10枚まで作成", "もっと作成"])
 
@@ -96,15 +97,14 @@ with tab2:
 with tab3:
     st.subheader("もっと作成")
     st.markdown(
-        'CSVファイルをアップロードしてください（列名：ます形, 活用形）'
-        '　[サンプルはこちら](https://drive.google.com/file/d/1n8ayy-kv8YIsJtYla40LzxWLy1aKPtYL/view?usp=sharing)',
-        unsafe_allow_html=True
+    "<p style='font-size: 14px;'>Excelファイルをアップロードしてください（列名：ます形, 活用形）　<a href='https://github.com/Mai-up/flashcard-generator/raw/refs/heads/main/sample.xlsx' target='_blank'>サンプルはこちら</a></p>",
+    unsafe_allow_html=True
     )
 
-    uploaded_file = st.file_uploader("", type="csv")
+    uploaded_file = st.file_uploader("", type="xlsx")
 
     if uploaded_file is not None:
-        df = pd.read_csv(uploaded_file)
+        df = pd.read_excel(uploaded_file)
         if "ます形" in df.columns and "活用形" in df.columns:
             pairs = list(zip(df["ます形"].fillna(""), df["活用形"].fillna("")))
             if len(pairs) > 0:
