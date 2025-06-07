@@ -50,7 +50,7 @@ def create_flashcard_pdf(pairs):
         pdf.set_font("Noto", "M", size=top_font_size)
         bottom_w = pdf.get_string_width(bottom_text)
         bottom_x = (page_width - bottom_w) / 2
-        bottom_y = page_height / 2 + (page_height / 2 - 20) / 2
+        bottom_y = page_height / 2 + (page_height / 2 - 20) / 2 + 5
         pdf.set_xy(bottom_x, bottom_y)
         pdf.cell(bottom_w, 20, txt=bottom_text)
 
